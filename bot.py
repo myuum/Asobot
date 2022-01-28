@@ -1,3 +1,5 @@
+
+from datetime import datetime
 from discord.ext import tasks
 import discord
 import config
@@ -23,8 +25,9 @@ class Asobot(discord.Bot):
         await self.job()
 
     async def job(self):
-        print("定時起動")
-        self.today_birthday_member()
+        now = datetime.now().strftime('%H:%M')
+        if (now == '00:00'):
+            self.today_birthday_member()
 
 def main():
     print('実行')

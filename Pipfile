@@ -12,3 +12,5 @@ py-cord = {git = "https://github.com/Pycord-Development/pycord.git"}
 
 [requires]
 python_version = "3.8"
+[scripts]
+start = "python main.py runserver"
