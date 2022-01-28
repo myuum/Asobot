@@ -1,5 +1,4 @@
 from discord.ext import tasks
-import asyncio
 import discord
 import config
 from birthday import birthday_cog
