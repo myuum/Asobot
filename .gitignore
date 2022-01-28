@@ -1,0 +1,7 @@
+*.sqlite
+config.ini
+*.sqlite-shm
+*.sqlite-wal
+*.pyc
+*.pyc
+.vscode/
