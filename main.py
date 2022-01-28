@@ -1,9 +1,6 @@
-import asyncio
 import config
 import discord
 from bot import Asobot
-import schedule
-import time
 intents = discord.Intents.all()
 discord_bot = Asobot(
     intents = intents, 
