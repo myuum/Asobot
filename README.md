@@ -1,4 +1,4 @@
-# Asobot-あそびば！専用BOT-
+# Asobot -あそびば！専用BOT-
 ## 概要
 
 discordサーバーのあそびば！専用のbotです。
