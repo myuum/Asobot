@@ -1,4 +1,4 @@
-# Asobot~あそびば！専用BOT~
+# Asobot-あそびば！専用BOT-
 ## 概要
 
 discordサーバーのあそびば！専用のbotです。
@@ -8,7 +8,6 @@ discordサーバーのあそびば！専用のbotです。
 
 
 ## 開発環境構築
-
 **1.Pythonの環境作成**  
 -Python3の導入方法については説明しません。  
 [pipenv](https://github.com/pypa/pipenv) で環境を作成します。pipenv の使い方は[公式ドキュメント](https://pipenv-ja.readthedocs.io/ja/translate-ja/)を参照してください。  
