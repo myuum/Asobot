@@ -5,7 +5,7 @@ from sqlalchemy import false
 
 def setting_get(setting: configparser.SectionProxy,name:str):
     val = setting.get(name)
-    if(val == None):
+    if(val == None or val == ''):
         print(f"{name}が設定されてません。")
         setting[name] = ''
         setting_get.is_none = True
