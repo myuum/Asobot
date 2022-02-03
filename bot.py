@@ -1,6 +1,7 @@
 
+from __future__ import barry_as_FLUFL
 from datetime import datetime
-from discord.ext import tasks
+from discord.ext import tasks,commands
 import discord
 import config
 from birthday import birthday_cog
@@ -10,14 +11,34 @@ guild_ids=[config.guild_id]
 class Asobot(discord.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cog = birthday_cog.setup(self,guild_ids)  
+        self.cog = birthday_cog.setup(self,config)  
     #===================各イベント=====================
     async def on_ready(self):
         print(f'We have logged in as {self.user}')
-       
+        await self.today_birthday_member()
+
+
+    @commands.has_permissions(change_nickname=True)
+    async def on_voice_state_update(self,member:discord.Member, before:discord.VoiceState, after:discord.VoiceState):
+        print(f"ボイスステート変更:{member.display_name}")
+        if(member.id != 390449375039717376): return
+        if(before.self_mute == after.self_mute): return
+        nick = "ミュート" if after.self_mute else ""
+        await member.edit(nick=nick)
     
     async def today_birthday_member(self):
-        await self.cog.today_birthday_member(self) 
+        text = self.cog.today_birthday_member(self) 
+        guild = self.get_guild(int(config.guild_id))
+        if(guild == None):
+            print("サーバーが存在しません。")
+            return
+        ch = guild.get_channel(int(config.text_ch_id))
+        if(ch == None): 
+             print("チャンネルがが存在しません。")
+             return
+        await ch.send(text)
+
+
     @tasks.loop(seconds=30)
     async def tock_loop(self):
         # botが起動するまで待つ
@@ -27,7 +48,7 @@ class Asobot(discord.Bot):
     async def job(self):
         now = datetime.now().strftime('%H:%M')
         if (now == '00:00'):
-            self.today_birthday_member()
+            await self.today_birthday_member()
 
 def main():
     print('実行')

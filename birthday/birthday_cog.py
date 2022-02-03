@@ -8,8 +8,8 @@ from . import birthday_sheet
 class birthdayCog(commands.Cog):
     guild_ids = []
     birthday = SlashCommandGroup("誕生日", "誕生日関係コマンド")
-    def __init__(self, bot:discord.Bot, guild_ids):
-        self.guild_ids = guild_ids
+    def __init__(self, bot:discord.Bot, config):
+        self.guild_ids = [config.guild_id]
         self.bot = bot
         
     @birthday.command(name = "登録",guild_ids = guild_ids)
@@ -26,7 +26,8 @@ class birthdayCog(commands.Cog):
         else:
             member = user
         birthday_sheet.register(member.id, date)
-        text = f"{member.name}の誕生日を{month}/{day}として登録しました。"
+        text = f"{member.display_name}の誕生日を{month}/{day}として登録しました。"
+        print(text)
         await ctx.respond(text, ephemeral=True)
 
     @birthday.command(name = "検索", description = "ユーザーで検索します", guild_ids = guild_ids)
@@ -36,19 +37,21 @@ class birthdayCog(commands.Cog):
         date = birthday_sheet.user_serach(user.id)
         text = f"{user.mention}の誕生日は"
         text += "登録されてません" if date == None else f"{date.month}月{date.day}日です"
+        print(text)
         await ctx.respond(text)  
     
-    async def today_birthday_member(self,ctx: Context):
+    def today_birthday_member(self,ctx: Context):
         ids = birthday_sheet.date_serach(datetime.date.today())
-        text = "今日の誕生日は\n"
-        if(ids == None): return
+        print("今日の誕生日検索")
+        text = "今日が誕生日の人は\n"
+        if(ids == None): 
+            print("今日が誕生日の人はいません")
+            return None
         for id in ids :
-            member = get_member(self,id) 
-            if(type(member) is User ):
-                print(member.name)
-                text += f"{member.mention}\n"
-            else: continue
-        await ctx.respond(text)  
+            text += f"<@{id}>\n"
+        text += "です!! おめでとうございます!!"
+        print(text)
+        return text  
                 
             
 
@@ -64,7 +67,7 @@ def get_channel(ctx, channel_id = None):
     if(channel_id == None):
         return ctx.channel
     return ctx.guild.get_channel(channel_id)
-def setup(bot, guild_ids):
-    cog = birthdayCog(bot, guild_ids)
+def setup(bot, config):
+    cog = birthdayCog(bot, config)
     bot.add_cog(cog)
     return cog
