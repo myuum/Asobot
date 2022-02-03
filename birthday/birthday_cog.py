@@ -12,7 +12,7 @@ class birthdayCog(commands.Cog):
         self.guild_ids = [config.guild_id]
         self.bot = bot
         
-    @birthday.command(name = "登録",guild_ids = guild_ids)
+    @birthday.command(name = "登録",guild_ids = guild_ids, description = "月日だけ入れると自分の誕生日入力します。userにメンション入れるとその人の誕生日を入力します。")
     async def birthday_register(
         self, ctx: Context,
         month: Option(int, "月",min_value=1, max_value=12),
