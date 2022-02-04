@@ -16,7 +16,6 @@ class Asobot(discord.Bot):
     async def on_ready(self):
         print(f'We have logged in as {self.user}')
 
-
     @commands.has_permissions(change_nickname=True)
     async def on_voice_state_update(self,member:discord.Member, before:discord.VoiceState, after:discord.VoiceState):
         print(f"ボイスステート変更:{member.display_name}")
