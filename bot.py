@@ -11,7 +11,9 @@ guild_ids=[config.guild_id]
 class Asobot(discord.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cog = birthday_cog.setup(self,config)  
+        print('cog設定')
+        self.cog = birthday_cog.setup(self,config)
+        print('cog完了')  
     #===================各イベント=====================
     async def on_ready(self):
         print(f'We have logged in as {self.user}')
