@@ -47,7 +47,7 @@ class birthdayCog(commands.Cog):
         for id,date in data.items() :
             member = get_member(ctx, id)
             text += f"{member.display_name}:{date.month}月{date.day}日"
-        await ctx.respond(text)  
+        await ctx.respond(text, ephemeral=True)  
     
     def today_birthday_member(self,ctx: Context):
         ids = birthday_sheet.date_serach(datetime.date.today())
