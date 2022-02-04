@@ -15,7 +15,6 @@ class Asobot(discord.Bot):
     #===================各イベント=====================
     async def on_ready(self):
         print(f'We have logged in as {self.user}')
-        await self.today_birthday_member()
 
 
     @commands.has_permissions(change_nickname=True)

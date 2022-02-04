@@ -24,13 +24,16 @@ def date_serach(date:datetime.date):
         if(date.month == date2.month and date.day == date2.day):
             ids.append(d['id'])
     return ids if len(ids) != 0 else None
-
+def all():
+    birthday_t = __load_table()
+    data = birthday_t.find()
+    d = {d['id']: d['birthday'] for d in data}
+    return d
 def __load_table():
     return db.create_table('birthday',primary_id='id',primary_type=db.types.bigint)
 
 if __name__ == '__main__':
-    date=datetime.date.today()
-    ids = date_serach(date)
-    for id in ids :
-        print(id)
+    data = all()
+    for k,v in data.items() :
+        print(f"key:{k}, value:{v}")
 
