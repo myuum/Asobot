@@ -465,7 +465,7 @@
         },
         "py-cord": {
             "git": "https://github.com/Pycord-Development/pycord.git",
-            "ref": "e50c239666c97480eac587ed04376031aa7c8003"
+            "ref": "6fb972d91d30ef683f0ba52509ed631467805f2a"
         },
         "sqlalchemy": {
             "hashes": [

@@ -3,8 +3,6 @@ from discord import Member, Message, Option, SlashCommandGroup
 import discord
 from discord.ext import commands
 from discord.ext.commands.context import Context
-
-from bot import Asobot
 from . import birthday_sheet
 from . import birthbay_view
 
@@ -85,7 +83,7 @@ def get_channel(ctx, channel_id = None):
     if(channel_id == None):
         return ctx.channel
     return ctx.guild.get_channel(channel_id)
-def setup(bot:Asobot, config):
+def setup(bot, config):
     cog = birthdayCog(bot, config)
     bot.add_cog(cog)
     return cog
