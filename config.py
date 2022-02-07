@@ -1,8 +1,6 @@
 import configparser
 import os
 
-from sqlalchemy import false
-
 def setting_get(setting: configparser.SectionProxy,name:str):
     val = setting.get(name)
     if(val == None or val == ''):

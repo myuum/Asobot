@@ -1,9 +1,12 @@
 import datetime
-from discord import Member, Option, SlashCommandGroup, User
+from discord import Member, Message, Option, SlashCommandGroup
 import discord
 from discord.ext import commands
 from discord.ext.commands.context import Context
+
+from bot import Asobot
 from . import birthday_sheet
+from . import birthbay_view
 
 class birthdayCog(commands.Cog):
     guild_ids = []
@@ -12,6 +15,19 @@ class birthdayCog(commands.Cog):
         self.guild_ids = [config.guild_id]
         self.bot = bot
         
+    @commands.Cog.listener()
+    async def on_member_remove(self, member:Member):
+        birthday_sheet.sync_menber(member.guild)
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member:Member):
+        birthday_sheet.sync_menber(member.guild)
+
+    @commands.Cog.listener()
+    async def on_message(self,message:Message):
+        if message.content == "誕生日同期":
+            birthday_sheet.sync_menber(message.guild)
+            await message.delete()    
     @birthday.command(name = "登録",guild_ids = guild_ids)
     async def birthday_register(
         self, ctx: Context,
@@ -39,15 +55,12 @@ class birthdayCog(commands.Cog):
         text += "登録されてません" if date == None else f"{date.month}月{date.day}日です"
         print(text)
         await ctx.respond(text)  
-    # @birthday.command(name = "全取得", description = "すべてのユーザーの誕生日を取得します。", guild_ids = guild_ids)
-    # async def birthday_all(self, ctx: Context):
-    #     data = birthday_sheet.all()
-    #     text = ""
-    #     for id,date in data.items() :
-    #         member = get_member(ctx, id)
-    #         text += f"{member.display_name}:{date.month}月{date.day}日"
-    #     await ctx.respond(text)
-    #   
+        
+    @birthday.command(name = "全取得", description = "登録された誕生日の一覧を表示させます", guild_ids = guild_ids)
+    async def birthday_all(self, ctx: Context): 
+        await ctx.respond("誕生日の一覧を表示します")  
+        await birthbay_view.create(ctx.guild,ctx.channel)
+    
     def today_birthday_member(self,ctx: Context):
         ids = birthday_sheet.date_serach(datetime.date.today())
         print("今日の誕生日検索")
@@ -59,10 +72,7 @@ class birthdayCog(commands.Cog):
             text += f"<@{id}>\n"
         text += "です!! おめでとうございます!!"
         print(text)
-        return text  
-                
-            
-
+        return text     
 def get_member(ctx:Context, member_id = None):
     if(member_id == None):
         member = ctx.author
@@ -75,7 +85,7 @@ def get_channel(ctx, channel_id = None):
     if(channel_id == None):
         return ctx.channel
     return ctx.guild.get_channel(channel_id)
-def setup(bot, config):
+def setup(bot:Asobot, config):
     cog = birthdayCog(bot, config)
     bot.add_cog(cog)
     return cog
