@@ -1,5 +1,5 @@
 import datetime
-from discord import Option, SlashCommandGroup
+from discord import Member, Message, Option, SlashCommandGroup
 import discord
 from discord.ext import commands
 from discord.ext.commands.context import Context
@@ -15,6 +15,19 @@ class birthdayCog(commands.Cog):
         self.guild_ids = [config.guild_id]
         self.bot = bot
         
+    @commands.Cog.listener()
+    async def on_member_remove(self, member:Member):
+        birthday_sheet.sync_menber(member.guild)
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member:Member):
+        birthday_sheet.sync_menber(member.guild)
+
+    @commands.Cog.listener()
+    async def on_message(self,message:Message):
+        if message.content == "誕生日同期":
+            birthday_sheet.sync_menber(message.guild)
+            await message.delete()    
     @birthday.command(name = "登録",guild_ids = guild_ids)
     async def birthday_register(
         self, ctx: Context,
@@ -42,6 +55,7 @@ class birthdayCog(commands.Cog):
         text += "登録されてません" if date == None else f"{date.month}月{date.day}日です"
         print(text)
         await ctx.respond(text)  
+        
     @birthday.command(name = "全取得", description = "登録された誕生日の一覧を表示させます", guild_ids = guild_ids)
     async def birthday_all(self, ctx: Context): 
         await ctx.respond("誕生日の一覧を表示します")  

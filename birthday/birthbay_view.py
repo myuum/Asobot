@@ -12,15 +12,19 @@ class Page(PageView):
 
     async def body(self, _paginator: PaginationView):
         text = self.get_data()
-        return Message(f"```\n{text}\n```")
+        return Message(f"```shell\n{text}\n```")
     def get_data(self):
         d =birthday_sheet.get_page(self.page_num, self.limit)
         data = []
         for id, date in d:
+            print(f"id= {id}")
             m = self.guild.get_member(id)
-            if(m == None): break
+            print(f"n= {m}")
+            if(m == None): continue
             data.append((m.display_name , date))
-        return tabulate(data,headers=['ユーザー', '誕生日'], tablefmt='pretty',colalign=('center','center'))
+        print(data)
+
+        return tabulate(data,headers=['ユーザー', '誕生日'],colalign=('left','right'))
         
     async def on_appear(self, paginator: PaginationView) -> None:
         print(f"appeared page: {paginator.page}")
