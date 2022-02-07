@@ -1,5 +1,8 @@
 import datetime
+import math
 import dataset
+from tabulate import tabulate
+
 db = dataset.connect('sqlite:///db/asobiba.sqlite')#データベース名.db拡張子で設定
 
 def register(user_id, date):
@@ -26,14 +29,31 @@ def date_serach(date:datetime.date):
     return ids if len(ids) != 0 else None
 def all():
     birthday_t = __load_table()
-    data = birthday_t.find()
-    d = {d['id']: d['birthday'] for d in data}
-    return d
+    data = birthday_t.find(order_by='id')
+    return to_list(data)
+
+def get_page(page:int,limit:int):
+    birthday_t = __load_table()
+    data = birthday_t.find(order_by='birthday',_limit = limit,_offset = limit * page)
+    return to_list(data)
+def page_count(limit:int): 
+    birthday_t = __load_table()
+    count = birthday_t.count()
+    return math.ceil(count / limit)
+
+def to_list(data):
+    datelist = []
+    for d in data:
+        id = d['id']
+        date = d['birthday']
+        datelist.append((id,f"{date.month}/{date.day}"))
+    return datelist
+
 def __load_table():
     return db.create_table('birthday',primary_id='id',primary_type=db.types.bigint)
 
 if __name__ == '__main__':
-    data = all()
-    for k,v in data.items() :
-        print(f"key:{k}, value:{v}")
+    print(f"{page_count(4)}")
+    data = tabulate(get_page(1,3),headers=['user', 'date'], tablefmt='fancy_grid',colalign=('center','right'))
+    print(data)
 
