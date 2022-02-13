@@ -21,7 +21,10 @@ class Asobot(discord.Bot):
             print(f"config.guild_id:{config.guild_id} message.guild_id:{message.guild.id}")
             config.reload()
             self.cog_reload()
-            await message.delete()    
+            await message.delete()   
+        if message.content == "$today_birthday" :
+            await self.today_birthday_member()
+
 
     @commands.has_permissions(change_nickname=True)
     async def on_voice_state_update(self,member:discord.Member, before:discord.VoiceState, after:discord.VoiceState):
