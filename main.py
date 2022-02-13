@@ -1,11 +1,11 @@
-import config
+from discord.ext.commands.context import Context
+from cogs.birthday_cog import recycle
+import config.config as config
 import discord
 from bot import Asobot
 intents = discord.Intents.all()
 discord_bot = Asobot(
-    intents = intents, 
-    debug_guild = config.guild_id
-    )
+    intents = intents)
 
 def main():
     print('実行')

@@ -130,3 +130,5 @@ dmypy.json
 
 config.ini
 *.sqlite*
+.vscode/
+Pipfile.lock

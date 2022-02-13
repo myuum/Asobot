@@ -31,11 +31,11 @@ def date_serach(date:datetime.date):
 
 def all():
     birthday_t = __load_table()
-    data = birthday_t.find(is_dropout = False, order_by='id')
+    data = birthday_t.find(is_dropout = False, order_by='id', birthday = {'!=': None})
     return to_list(data)
 def get_page(page:int,limit:int):
     birthday_t = __load_table()
-    data = birthday_t.find(is_dropout = False, order_by='birthday',_limit = limit,_offset = limit * page)
+    data = birthday_t.find(is_dropout = False, birthday = {'!=': None} , order_by='birthday',_limit = limit,_offset = limit * page)
     return to_list(data)
 def page_count(limit:int): 
     birthday_t = __load_table()
@@ -49,8 +49,6 @@ def sync_menber(guild:Guild):
         id = d['id']
         menber = guild.get_member(id)
         birthday_t.upsert({"id": id, "is_dropout": (menber == None)}, ["id"])
-
-
 
 def to_list(data):
     datelist = []
