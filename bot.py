@@ -3,6 +3,7 @@ import os
 from discord.ext import tasks,commands
 import discord
 import config.config as config
+from cogs import birthday_cog
 
 # 読み込むCogの名前を格納しておく。
 class Asobot(discord.Bot):
@@ -40,7 +41,7 @@ class Asobot(discord.Bot):
                 self.reload_extension(f"cogs.{filename[:-3]}")
         print('cog完了')  
     async def today_birthday_member(self):
-        text = self.cog.today_birthday_member(self) 
+        text = birthday_cog.today_birthday_member() 
         guild = self.get_guild(config.guild_id)
         if(guild == None):
             print("サーバーが存在しません。")

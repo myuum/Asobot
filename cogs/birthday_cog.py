@@ -75,22 +75,23 @@ class birthdayCog(commands.Cog):
         await ctx.respond("誕生日の一覧を表示します")  
         await birthbay_view.create(ctx.guild,ctx.channel)
 
-    def today_birthday_member(self,ctx: Context):
-        today = datetime.date.today()
-        ids = birthday_sheet.date_serach(today)
-        print("今日の誕生日検索")
-        text = ""
-        if(today.month == 2 & today.day == 16):
-            text += f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
-        text += "今日が誕生日の人は\n"
-        if(ids == None): 
-            print("今日が誕生日の人はいません")
-            return None
-        for id in ids :
-            text += f"<@{id}>\n"
-        text += "おめでとうございます:tada:"
-        print(text)
-        return text     
+def today_birthday_member():
+    today = datetime.date.today()
+    ids = birthday_sheet.date_serach(today)
+    print("今日の誕生日検索")
+    text = ""
+    if(today.month == 2 & today.day == 16):
+        text += f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
+    text += "今日が誕生日の人は\n"
+    if(ids == None): 
+        print("今日が誕生日の人はいません")
+        return None
+    for id in ids :
+        text += f"<@{id}>\n"
+    text += "おめでとうございます:tada:"
+    print(text)
+    return text  
+
 def get_member(ctx:Context, member_id = None):
     if(member_id == None):
         member = ctx.author

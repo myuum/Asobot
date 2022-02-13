@@ -25,6 +25,7 @@ def date_serach(date:datetime.date):
     for d in data:
         print(d)
         date2 = d['birthday']
+        if(date2 == None): continue
         if(date.month == date2.month and date.day == date2.day):
             ids.append(d['id'])
     return ids if len(ids) != 0 else None
