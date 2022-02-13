@@ -1,5 +1,3 @@
-from discord.ext.commands.context import Context
-from cogs.birthday_cog import recycle
 import config.config as config
 import discord
 from bot import Asobot
