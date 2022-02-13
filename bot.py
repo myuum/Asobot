@@ -3,8 +3,6 @@ import os
 from discord.ext import tasks,commands
 import discord
 import config.config as config
-from discord.ext.commands.context import Context
-from cogs import event_cog,birthday_cog
 
 # 読み込むCogの名前を格納しておく。
 class Asobot(discord.Bot):
