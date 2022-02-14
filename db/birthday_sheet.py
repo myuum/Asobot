@@ -60,7 +60,7 @@ def to_list(data):
     return datelist
 
 def __load_table():
-    return db.create_table('birthday',primary_id='id',primary_type=db.types.bigint)
+    return db.create_table('t_user',primary_id='id',primary_type=db.types.bigint)
 
 if __name__ == '__main__':
     print(f"{page_count(4)}")
