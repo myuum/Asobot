@@ -82,10 +82,10 @@ def today_birthday_member():
     text = ""
     if(today.month == 2 & today.day == 16):
         text += f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
-    text += "今日が誕生日の人は\n"
-    if(ids == None): 
+    elif(ids == None): 
         print("今日が誕生日の人はいません")
         return None
+    text += "今日が誕生日の人は\n"
     for id in ids :
         text += f"<@{id}>\n"
     text += "おめでとうございます:tada:"
