@@ -24,9 +24,7 @@ class Page(PageView):
         d =birthday_sheet.get_page(self.page_num, limit)
         data = []
         for id, date in d:
-            print(f"id= {id}")
             m = self.guild.get_member(id)
-            print(f"n= {m}")
             if(m == None): continue
             data.append((m.display_name , date))
         print(data)

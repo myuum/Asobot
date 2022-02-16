@@ -25,6 +25,7 @@ def date_serach(date:datetime.date):
     for d in data:
         print(d)
         date2 = d['birthday']
+        if(date2 == None): continue
         if(date.month == date2.month and date.day == date2.day):
             ids.append(d['id'])
     return ids if len(ids) != 0 else None
@@ -59,7 +60,7 @@ def to_list(data):
     return datelist
 
 def __load_table():
-    return db.create_table('birthday',primary_id='id',primary_type=db.types.bigint)
+    return db.create_table('t_user',primary_id='id',primary_type=db.types.bigint)
 
 if __name__ == '__main__':
     print(f"{page_count(4)}")
