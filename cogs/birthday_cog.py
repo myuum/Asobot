@@ -79,12 +79,12 @@ def today_birthday_member():
     today = datetime.date.today()
     ids = birthday_sheet.date_serach(today)
     print("今日の誕生日検索")
-    text = ""
-    if(today.month == 2 & today.day == 16):
-        text += f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
-    elif(ids == None): 
+    text = None
+    if(today.month == 2 and today.day == 16):
+        text = f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
+    if(ids == None): 
         print("今日が誕生日の人はいません")
-        return None
+        return text
     text += "今日が誕生日の人は\n"
     for id in ids :
         text += f"<@{id}>\n"
