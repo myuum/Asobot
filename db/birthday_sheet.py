@@ -42,15 +42,16 @@ def page_count(limit:int):
     birthday_t = __load_table()
     count = birthday_t.count(is_dropout = False)
     return math.ceil(count / limit)
-
+#
 def sync_menber(guild:Guild):
     birthday_t = __load_table()
-    data = birthday_t.find(order_by='id')   
-    for d in data:
-        id = d['id']
-        menber = guild.get_member(id)
-        birthday_t.upsert({"id": id, "is_dropout": (menber == None)}, ["id"])
-
+    data = {d['id'] for d in birthday_t.find(order_by='id')}
+    join_member_ids = {m.id for m in guild.members}
+    leave_member_ids = data - join_member_ids
+    members = [{"id": id, "is_dropout": False} for id in join_member_ids]
+    members.extend([{"id": id, "is_dropout": True} for id in leave_member_ids])
+    birthday_t.upsert_many(members,['id'])
+    
 def to_list(data):
     datelist = []
     for d in data:

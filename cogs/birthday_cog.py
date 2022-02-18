@@ -23,7 +23,7 @@ class birthdayCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self,message:Message):
-        if message.content == "誕生日同期":
+        if message.content == "メンバー同期":
             birthday_sheet.sync_menber(message.guild)
             await message.delete()    
         if (message.content.startswith('$list_sync')):
