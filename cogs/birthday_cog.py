@@ -84,6 +84,7 @@ def today_birthday_member():
         text = f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
     if(ids == None): 
         print("今日が誕生日の人はいません")
+        print(text)
         return text
     text += "今日が誕生日の人は\n"
     for id in ids :
