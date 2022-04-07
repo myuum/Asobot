@@ -51,7 +51,7 @@ class Asobot(discord.Bot):
              print("チャンネルがが存在しません。")
              return
         await ch.send(text)
-    @tasks.loop(seconds=30)
+    @tasks.loop(seconds=40)
     async def tock_loop(self):
         # botが起動するまで待つ
         await self.wait_until_ready()
@@ -59,7 +59,7 @@ class Asobot(discord.Bot):
 
     async def job(self):
         now = datetime.now().strftime('%H:%M')
-        if (now == '00:00'):
+        if (now == '00:01'):
             await self.today_birthday_member()
     
 def main():
