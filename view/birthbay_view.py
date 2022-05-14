@@ -7,6 +7,7 @@ from db import birthday_sheet
 import config.config as config
 from view.asobu_pagination import AsobuPagination
 from view.recycle_provider import RecycleProvider
+from log import log
 
 limit = config.list_limit
 
@@ -27,7 +28,7 @@ class Page(PageView):
             m = self.guild.get_member(id)
             if(m == None): continue
             data.append((m.display_name , date))
-        print(data)
+        log.d(data)
         return tabulate(data,headers=['ユーザー', '誕生日'],colalign=('left','right'))
         
     async def on_appear(self, paginator: PaginationView) -> None:
@@ -37,7 +38,7 @@ class Page(PageView):
             for i in range(now_max + 1, target):
                 paginator._views.append(Page(self.guild,i,limit))
                 paginator.max_page = len(paginator._views) - 1
-        print(f"appeared page: {paginator.page}")
+        log.d(f"appeared page: {paginator.page}")
 async def create(guild: discord.Guild, ch: discord.TextChannel, message: Optional[discord.Message] = None):
     view = AsobuPagination(create_page(guild))
     tracker = ViewTracker(view, timeout=None)
