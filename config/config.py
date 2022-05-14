@@ -1,10 +1,11 @@
 import configparser
 import os
+from log import log
 
 def setting_get(setting: configparser.SectionProxy,name:str,default = ''):
     val = setting.get(name)
     if(val == None or val == ''):
-        print(f"{name}が設定されてません。")
+        log.d(f"{name}が設定されてません。")
         val = str(default)
         setting[name] = val
         setting_get.is_none = True
@@ -14,7 +15,7 @@ def setting_get(setting: configparser.SectionProxy,name:str,default = ''):
 filename = 'config.ini'
 inifile = configparser.SafeConfigParser()
 if(not os.path.isfile(filename)):
-    print("設定ファイルが存在しません。")
+    log.d("設定ファイルが存在しません。")
     inifile['BOT_SETTING'] = {}
 else: inifile.read(filename)
 
@@ -28,7 +29,7 @@ list_limit = int(setting_get(bot_setting, 'list_limit', 10))
 if(setting_get.is_none):
     with open(filename, 'w') as file:
         inifile.write(file)
-    print("終了します")
+    log.d("終了します")
     exit()
 def reload():
     guild_id = int(setting_get(bot_setting, 'guild_id'))

@@ -3,12 +3,13 @@ import math
 import dataset
 from discord import Guild
 from tabulate import tabulate
+from log import log
 
 db = dataset.connect('sqlite:///db/asobiba.sqlite')#データベース名.db拡張子で設定
 
 def register(user_id, date):
     birthday = __load_table()
-    print(f"id: {user_id}, 日付:{date}")
+    log.i(f"id: {user_id}, 日付:{date}")
     birthday.upsert({"id": user_id, "birthday": date,"is_dropout":False}, ["id"])
 
 def user_serach(user_id):
@@ -23,7 +24,7 @@ def date_serach(date:datetime.date):
     if(data == None): return
     ids = []
     for d in data:
-        print(d)
+        log.d(d)
         date2 = d['birthday']
         if(date2 == None): continue
         if(date.month == date2.month and date.day == date2.day):
@@ -64,7 +65,7 @@ def __load_table():
     return db.create_table('t_user',primary_id='id',primary_type=db.types.bigint)
 
 if __name__ == '__main__':
-    print(f"{page_count(4)}")
+    log.d(f"{page_count(4)}")
     data = tabulate(get_page(0,3),headers=['ユーザー名', '誕生日'], tablefmt='fancy_grid')
-    print(data)
+    log.d(data)
 
