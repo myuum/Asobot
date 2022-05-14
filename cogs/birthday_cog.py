@@ -7,6 +7,7 @@ from discord.ext.commands.context import Context
 from db import birthday_sheet
 from view import birthbay_view
 import config.config as config
+from log import log
 
 class birthdayCog(commands.Cog):
     birthday = SlashCommandGroup("誕生日", "誕生日関係コマンド")
@@ -23,7 +24,7 @@ class birthdayCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self,message:Message):
-        if message.content == "誕生日同期":
+        if message.content == "メンバー同期":
             birthday_sheet.sync_menber(message.guild)
             await message.delete()    
         if (message.content.startswith('$list_sync')):
@@ -57,7 +58,7 @@ class birthdayCog(commands.Cog):
         text = f"{member.display_name}の誕生日を"
         birthday_sheet.register(member.id, date)
         text = f"{month}/{day}として登録しました。"if(month != 0 and day != 0) else "削除しました"
-        print(text)
+        log.i(text)
         await ctx.respond(text, ephemeral=True)
 
     @birthday.command(name = "検索", description = "ユーザーで検索します", guild_ids = [config.guild_id])
@@ -67,7 +68,7 @@ class birthdayCog(commands.Cog):
         date = birthday_sheet.user_serach(user.id)
         text = f"{user.mention}の誕生日は"
         text += "登録されてません" if date == None else f"{date.month}月{date.day}日です"
-        print(text)
+        log.i(text)
         await ctx.respond(text)  
         
     @birthday.command(name = "リスト表示", description = "登録された誕生日の一覧をリストで表示させます", guild_ids = [config.guild_id])
@@ -78,18 +79,18 @@ class birthdayCog(commands.Cog):
 def today_birthday_member():
     today = datetime.date.today()
     ids = birthday_sheet.date_serach(today)
-    print("今日の誕生日検索")
+    log.i("今日の誕生日検索")
     text = ""
     if(today.month == 2 and today.day == 16):
         text = f"今日はサーバー設立{today.year -2021}周年です:tada:\n"
     if(ids == None): 
-        print("今日が誕生日の人はいません")
+        log.i("今日が誕生日の人はいません")
         return text
     text += "今日は\n"
     for id in ids :
         text += f"<@{id}>\n"
     text += "が誕生日です！！\n誕生日おめでとうございます:tada:"
-    print(text)
+    log.i(text)
     return text  
 
 def get_member(ctx:Context, member_id = None):
@@ -108,5 +109,5 @@ async def recycle(guild:Guild,message:Message):
     await birthbay_view.recycle(guild,message)
 
 def setup(bot):
-    print('ロードbirthdayCog')
+    log.d('ロードbirthdayCog')
     bot.add_cog(birthdayCog(bot))
