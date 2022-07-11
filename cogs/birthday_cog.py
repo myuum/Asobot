@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.context import Context
 from db import birthday_sheet
+from discord_utility import get_member
 from view import birthbay_view
 import config.config as config
 from log import log
@@ -14,14 +15,6 @@ class birthdayCog(commands.Cog):
     def __init__(self, bot:discord.Bot):
         self.bot = bot
         
-    @commands.Cog.listener()
-    async def on_member_remove(self, member:Member):
-        birthday_sheet.sync_menber(member.guild)
-
-    @commands.Cog.listener()
-    async def on_member_join(self, member:Member):
-        birthday_sheet.sync_menber(member.guild)
-
     @commands.Cog.listener()
     async def on_message(self,message:Message):
         if message.content == "メンバー同期":
@@ -92,19 +85,6 @@ def today_birthday_member():
     text += "が誕生日です！！\n誕生日おめでとうございます:tada:"
     log.i(text)
     return text  
-
-def get_member(ctx:Context, member_id = None):
-    if(member_id == None):
-        member = ctx.author
-    else :
-        member = ctx.guild.get_member(member_id)
-    if(member == None):
-        return None
-    return member 
-def get_channel(ctx, channel_id = None):
-    if(channel_id == None):
-        return ctx.channel
-    return ctx.guild.get_channel(channel_id)
 async def recycle(guild:Guild,message:Message):
     await birthbay_view.recycle(guild,message)
 
