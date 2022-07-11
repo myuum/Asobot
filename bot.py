@@ -3,6 +3,7 @@ import os
 from discord.ext import tasks,commands
 import discord
 import config.config as config
+from db import table_manager
 from cogs import birthday_cog
 from log import log
 
@@ -16,8 +17,7 @@ class Asobot(discord.Bot):
                 self.load_extension(f"cogs.{filename[:-3]}")
         log.d('cog完了')  
     #===================各イベント=====================
-    async def on_ready(self):
-        log.d(f'We have logged in as {self.user}')
+    
     async def on_message(self,message:discord.Message):
         if message.content == "$_cog":
             log.d(f"config.guild_id:{config.guild_id} message.guild_id:{message.guild.id}")
@@ -27,14 +27,6 @@ class Asobot(discord.Bot):
         if message.content == "$today_birthday" :
             await self.today_birthday_member()
 
-
-    @commands.has_permissions(change_nickname=True)
-    async def on_voice_state_update(self,member:discord.Member, before:discord.VoiceState, after:discord.VoiceState):
-        log.d(f"ボイスステート変更:{member.display_name}")
-        if(member.id != 390449375039717376): return
-        if(before.self_mute == after.self_mute): return
-        nick = "ミュート" if after.self_mute else ""
-        await member.edit(nick=nick)
     def cog_reload(self):
         log.d('cog読込')
         for filename in os.listdir("./cogs"):
