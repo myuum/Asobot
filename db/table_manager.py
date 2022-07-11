@@ -22,7 +22,7 @@ def sync_channel(guild:Guild):
     log.d("チャンネル同期")
     t_channel = __load_t_channel()
     data = {d['id'] for d in t_channel.find(order_by='id')}
-    join_member_ids = {m.id for m in guild.members}
+    join_member_ids = {m.id for m in guild.channels}
     leave_member_ids = data - join_member_ids
     for id in leave_member_ids:
         t_channel.delete(id = id)
@@ -30,7 +30,7 @@ def sync_channel(guild:Guild):
 def delete_channel(channel:GuildChannel):
     t_channel = __load_t_channel()
     if(t_channel.find_one(id = channel.id) != None):
-        t_channel.delete(id = id)
+        t_channel.delete(id = channel.id)
 
 def __load_t_user() -> Optional[Table] :
     return db.create_table('t_user',primary_id='id',primary_type=db.types.bigint)
