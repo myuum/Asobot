@@ -25,6 +25,7 @@ class Asobot(discord.Bot):
             self.cog_reload()
             await message.delete()   
         if message.content == "$today_birthday" :
+            await message.delete()   
             await self.today_birthday_member()
 
     def cog_reload(self):
