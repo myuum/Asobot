@@ -1,13 +1,14 @@
-import imp
+
 from itertools import tee
+
+from numpy import size
 from log import log
 import config.config as config
 from discord import Member, Option, SlashCommandGroup, VoiceChannel, VoiceState
-from discord.abc import GuildChannel
 import discord
 from discord.ext.commands.context import Context
 from discord.ext import commands
-from discord_utility import get_member
+from discord_utility import can_change, get_member
 from db import state_nick_sheet
 
 class stateNickCog(commands.Cog):
@@ -22,7 +23,12 @@ class stateNickCog(commands.Cog):
         nick = state_nick_sheet.user_state_nick(member.id, after)
         log.d(f"ニックネーム:{nick}")
         if(nick == None): return
-        await member.edit(nick=nick)
+        member.roles
+        try:
+            await member.edit(nick=nick)
+        except:
+            text = f"{member.name}はこのbotよりも高い権限のため変更できませんでした。"
+            log.d(text)
 
     @state_nick.command(name = "登録", description = "通話の状態に応じてそれぞれのニックネームを設定します。",guild_ids = [config.guild_id])
     async def state_nick_register(
@@ -31,8 +37,19 @@ class stateNickCog(commands.Cog):
         mute: Option(str,name = "ミュート時",default = "")
     ):
         user = get_member(ctx)
-        state_nick_sheet.nick_register(user.id, normal, mute)
+    
+        if(not can_change(ctx, self.bot, user)):
+            text = f"{user.name}は高い権限を持っているため登録できません。"
+            log.d(text)
+            state_nick_sheet.nick_register(user.id, None, None)
+            await ctx.respond(text, ephemeral=True)
+            return
+        if(normal == "" and mute == ""):
+            state_nick_sheet.nick_register(user.id, None, None)
+        else:
+            state_nick_sheet.nick_register(user.id, normal, mute)
         text = f"通常時: {normal}\nミュート時: {mute}\nとしてニックネームを登録しました。"
+        log.d(text)
         await ctx.respond(text, ephemeral=True)
     
     @state_nick.command(name = "無効チャンネル設定", description = "ニックネームの変更を行わないチャンネルを設定します。",guild_ids = [config.guild_id])
