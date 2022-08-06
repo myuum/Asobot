@@ -9,6 +9,7 @@ dataset = "*"
 py-cord = {git = "https://github.com/Pycord-Development/pycord.git"}
 discord-ext-ui = "*"
 tabulate = {extras = ["widechars"], version = "*"}
+pynacl = "*"
 
 [dev-packages]
 
