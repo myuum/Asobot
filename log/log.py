@@ -1,7 +1,7 @@
 from cmath import log
 import logging
 from logging import getLogger, StreamHandler, Formatter
-format = '%(asctime)s,%(name)s,%(levelname)s,%(message)s'
+format = '%(asctime)s,%(levelname)s,%(message)s'
 logging.basicConfig(filename="asobot.log",format=format)
 logger = getLogger("BotLog")
 logger.setLevel(logging.DEBUG)
