@@ -35,6 +35,7 @@ class Asobot(discord.Bot):
         log.d('cog完了')  
     async def today_birthday_member(self):
         text = birthday_cog.today_birthday_member() 
+        if(text == "") : return
         guild = self.get_guild(config.guild_id)
         if(guild == None):
             log.d("サーバーが存在しません。")
