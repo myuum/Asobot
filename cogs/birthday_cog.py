@@ -1,4 +1,3 @@
-from ast import Try
 import datetime
 from discord import Guild, Member, Message, Option, SlashCommandGroup
 import discord

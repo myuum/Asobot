@@ -1,8 +1,8 @@
 from log import log
-from discord import Bot, Member, Option, SlashCommandGroup, VoiceChannel, VoiceState
+from discord import Bot, Member
 from discord.abc import GuildChannel
 from discord.ext import commands
-from discord import Guild, Member, Message, Option, SlashCommandGroup
+from discord import Member
 from db import table_manager
 
 """

@@ -1,7 +1,3 @@
-
-from itertools import tee
-
-from numpy import size
 from log import log
 import config.config as config
 from discord import Member, Option, SlashCommandGroup, VoiceChannel, VoiceState
