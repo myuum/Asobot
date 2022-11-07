@@ -46,7 +46,7 @@ class Asobot(discord.Bot):
              log.d("チャンネルがが存在しません。")
              return
         await ch.send(text)
-    @tasks.loop(seconds=30)
+    @tasks.loop(seconds=60)
     async def tock_loop(self):
         await self.job()
 
