@@ -28,3 +28,18 @@ token = botのトークン
 ```shell
 pipenv run start
 ```
+```
+[Unit]
+Description=Asobot Python Program
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/myuumpi/Develop/Asobot
+ExecStart=/{格納先}/Asobot/.venv/bin/python3 /{格納先}/Asobot/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+```
